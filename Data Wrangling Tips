@@ -1,0 +1,122 @@
+1. Reading a csv file:
+df= pd.read_csv('C:/Users/xxxxx/Downloads/Folder/dummy.csv')
+
+2. Understanding data types:
+df.dtypes
+
+3. Counting the number of rows for every variable
+
+df.count()
+
+
+4. Checking for missing values -> Lists every variable with missing values
+
+df.isnull().sum()
+
+5. Removing records based on a string -> This is for does not contain
+
+df=df[~sales['ColumnB].str.contains("[ABC]").fillna(False)]
+
+6. # Find out the missing values
+null_data = df[df.isnull().any(axis=1)]
+null_data
+
+5. Dropping rows with missing values
+
+df.dropna(inplace=True)
+
+6. Counting the number of values in a column
+
+df['ColumnA'].vallue_counts()
+
+7. Displaying all rows 
+pd.set_option('display.max_rows',None)
+
+8. Stripping few characters
+df['ColumnC']=df['ColumnC'].str[:5]
+
+9. copying the dataset
+df1= df.copy()
+
+10. Creating Pivot tables
+
+ColumnDPivot=df1.pivot_table(index=['ColumnA'],columns='ColumnD',values='ColumnE').reset_index().fillna(0)
+
+
+
+ColumnA,ColumnD -> categorical variables
+ColumnE -> Numeric variable
+
+
+11. Display the first 5 records
+
+ColumnDPivot.head()
+
+12. Output to csv
+
+ColumnDPivot.to_csv('C:/Users/xxxxx/Downloads/Folder/ColumnDPivot.csv')
+
+13. Create a dataframe with a string if specific character
+
+df2=pd.DataFrame(df1[df1['ColumnF'].str.contains("Cat")])
+
+
+14. Drop columns
+df1=df1.drop(columns=['ColumnD','ColumnC']
+
+15. Renaming columns
+df1=df1.rename(columns={'ColumnA':'ID'})
+
+16. Stripping the prefix from data values of a column
+
+df1['ID']=df1['ID'].str.lstrip('IDNO')
+
+17. Adding characters 
+
+df1['ID'] = 'NewID' + df1['ID'].astype(str)
+
+18. Filter values that do not have
+
+df1 = df1[~df1['ID'].isin(['PromotionSales'])]
+
+19. Getting specific variables
+
+df2=df1[['ColumnE']]
+
+20. Join data
+
+df1=pd.merge(df1,ColumnDPivot,on='ID,how='left') ->Left Join
+df1=pd.merge(df1,ColumnDPivot,on='ID,how='outer') -> Full outer
+df1=df1.merge(ColumnDPivot,on='ID) -> Inner Join
+
+22. Calculating vif
+
+from patsy import dmatrices
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+%%capture
+#gather features
+features = "+".join(NewDataNum.columns )
+
+# get y and X dataframes based on this regression:
+y, X = dmatrices('SalesAmt ~' + features, NewDataNum, return_type='dataframe')
+# Calculate VIF Factors VIF= (1/(1- Rsquared)
+vif = pd.DataFrame()
+vif["VIF"] = [variance_inflation_factor(NewDataNum.values, i) for i in range(NewDataNum.shape[1])]
+vif["features"] = NewDataNum.columns
+# Identify variables with multicollinearity. If VIF is > 10, then drop the variable
+vif.round(1)
+
+
+23. Exclude the data that starts with
+
+df1=df1[~df1.ColumnF.str.startswith(('Freebie'))]
+
+24. If a value is missing in column 1, impute this with value from another column
+
+df1.ColumnG = df1.ColumnG.fillna(value=df1.ColumnF)
+
+25. convert str into int
+
+df1['ColumnG'].astype(str).astype(int)
